@@ -569,7 +569,7 @@ nav #links a:last-child {
     margin-bottom: 30px;
     /* background-color: #ffd5d5; */
     /* background-color: #F6F6F6; */
-    margin-left: 50px;
+    /* margin-left: 50px; */
 }
 
 
@@ -1181,6 +1181,11 @@ nav #links a:last-child {
         margin-top: 15px;
         margin-bottom: 15px;
 
+    }
+
+    .line {
+        margin-right: 1vmax;
+        width: 4vmax;
     }
 }
 
