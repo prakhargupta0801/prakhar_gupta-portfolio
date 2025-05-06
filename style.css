@@ -293,6 +293,7 @@ nav #links a:last-child {
     height: 60px;
     opacity: .3;
     background-color: rebeccapurple;
+    z-index: 99;
 }
 
 #blrtwo {
@@ -305,6 +306,8 @@ nav #links a:last-child {
     -webkit-filter: blur(35px) saturate(10);
     filter: blur(35px) saturate(10);
     background-color: rgb(255, 194, 114);
+    z-index: 99;
+
 }
 
 .blr {
@@ -1194,7 +1197,25 @@ nav #links a:last-child {
     }
 
     .timeline-item{
-        padding-left: 20px !important;
+        padding-left: 5px !important;
+    }
+
+    .timeline-line,.timeline-dot{
+        left: -10px !important;
+    }
+
+    .skills-used{
+        padding-top: 0 !important;
+    }
+
+    .card-header{
+        gap: 5px !important;
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+
+    .experience-point i{
+        margin-right: 5px !important;
     }
 }
 
@@ -1294,10 +1315,13 @@ nav #links a:last-child {
 .timeline-line {
     position: absolute;
     /* left: 50%; */
-    transform: translateX(-50%);
     width: 2px;
     height: 100%;
-    background: linear-gradient(to bottom, #ececec, #d0d0d0);
+    left: 0%;
+    top: 10px;
+    transform: translateX(-50%);
+    /* background: linear-gradient(to bottom, #ececec, #d0d0d0); */
+    background-color: #40bbe0;
     border-radius: 10px;
 }
 
@@ -1305,7 +1329,7 @@ nav #links a:last-child {
     position: relative;
     display: flex;
     justify-content: start;
-    padding-left: 50px;
+    padding-left: 30px;
 }
 
 .timeline-item:last-child{
@@ -1320,15 +1344,15 @@ nav #links a:last-child {
 .timeline-dot {
     position: absolute;
     left: 0%;
-    top: 30px;
+    top: 40px;
     transform: translateX(-50%);
-    width: 20px;
-    height: 20px;
-    background-color: #d0d0d0;
+    width: 15px;
+    height: 15px;
+    background-color: #40bbe0;
     border-radius: 50%;
     z-index: 2;
-    border: 4px solid white;
-    box-shadow: 0 0 0 4px #e6e6e6;
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px #40bbe0a1;
 }
 
 /* .timeline-item:nth-child(even) .timeline-dot {
@@ -1344,15 +1368,11 @@ nav #links a:last-child {
     /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
+    z-index: -1;
 }
 
-.experience-card:hover {
-    transform: translateY(-5px);
-    /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); */
-    /* box-shadow: 0 15px 40px 40bbe0; */
-}
 
-.experience-card::before {
+/* .experience-card::before {
     content: '';
     position: absolute;
     top: 30px;
@@ -1364,12 +1384,12 @@ nav #links a:last-child {
 
 .timeline-item .experience-card::before {
     left: -10px;
-}
+} */
 
 .card-header {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 6px;
     margin-bottom: 15px;
     border-bottom: 2px solid #d6d6d6;
     padding-bottom: 15px;
@@ -1387,7 +1407,7 @@ nav #links a:last-child {
     color: #777;
     font-weight: 600;
     display: block;
-    margin-top: 5px;
+    margin-top: 2px;
 }
 
 .card-duration {
