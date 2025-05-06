@@ -418,15 +418,15 @@ nav #links a:last-child {
 
 .smpl {
     width: 350px;
-    height: max-content;
+    height: auto;
     margin: 15px;
     position: relative;
     /* border: 1px solid rgb(220, 220, 220); */
     /* background-color: #F6F6F6; */
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
-
+    /* box-shadow: rgba(17, 17, 26, 0.155) 0px 0px 16px; */
+    box-shadow: 4px 4px 19px 2px #00000024;
 }
 
 .smpl h3 {
@@ -479,7 +479,7 @@ nav #links a:last-child {
     width: 85%;
 }
 
-.d-flex{
+.d-flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1187,6 +1187,15 @@ nav #links a:last-child {
         margin-right: 1vmax;
         width: 4vmax;
     }
+
+    .experience-card{
+        width: 100% !important;
+        padding: 20px !important;
+    }
+
+    .timeline-item{
+        padding-left: 20px !important;
+    }
 }
 
 
@@ -1268,8 +1277,189 @@ nav #links a:last-child {
     transform: translateX(-38.5px);
 }
 
-.smp-details .view-link{
+.smp-details .view-link {
     display: flex;
     align-items: center;
     justify-content: end;
+}
+
+
+/* Experience Section - Redesigned */
+.timeline-container {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 60px;
+}
+
+.timeline-line {
+    position: absolute;
+    /* left: 50%; */
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, #ececec, #d0d0d0);
+    border-radius: 10px;
+}
+
+.timeline-item {
+    position: relative;
+    display: flex;
+    justify-content: start;
+    padding-left: 50px;
+}
+
+.timeline-item:last-child{
+    margin-bottom: 60px;
+    margin-top: 60px;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 0%;
+    top: 30px;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: #d0d0d0;
+    border-radius: 50%;
+    z-index: 2;
+    border: 4px solid white;
+    box-shadow: 0 0 0 4px #e6e6e6;
+}
+
+/* .timeline-item:nth-child(even) .timeline-dot {
+    background-color: #ff6b6b;
+    box-shadow: 0 0 0 4px #ff6b6b79;
+} */
+
+.experience-card {
+    width: 79.4%;
+    background-color: #F6F6F6;
+    border-radius: 15px;
+    padding: 30px;
+    /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.experience-card:hover {
+    transform: translateY(-5px);
+    /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); */
+    /* box-shadow: 0 15px 40px 40bbe0; */
+}
+
+.experience-card::before {
+    content: '';
+    position: absolute;
+    top: 30px;
+    width: 20px;
+    height: 20px;
+    background-color: #F6F6F6;
+    transform: rotate(45deg);
+}
+
+.timeline-item .experience-card::before {
+    left: -10px;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #d6d6d6;
+    padding-bottom: 15px;
+}
+
+.card-header h4 {
+    font-size: 20px;
+    color: #333;
+    margin: 0;
+    font-weight: 700;
+}
+
+.job-title {
+    font-size: 16px;
+    color: #777;
+    font-weight: 600;
+    display: block;
+    margin-top: 5px;
+}
+
+.card-duration {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.card-duration i {
+    margin-right: 8px;
+    color: #ff6b6b;
+}
+
+.timeline-item:nth-child(even) .card-duration i {
+    color: #40bbe0;
+}
+
+.card-duration h6 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    color: #000000;
+}
+
+.card-content {
+    margin-bottom: 20px;
+}
+
+.experience-point {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.experience-point i {
+    font-size: 18px;
+    margin-right: 15px;
+    margin-top: 4px;
+    flex-shrink: 0;
+    color: #000000;
+}
+
+
+.experience-point p {
+    margin: 0;
+    color: #414040;
+    line-height: normal;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.skills-used {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed #eee;
+}
+
+.skills-used span {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    color: white;
+    background-color: #EF6A93 !important;
+    cursor: pointer;
+}
+
+
+.timeline-item:nth-child(even) .skills-used span {
+    background-color: #40bbe0 !important;
 }
