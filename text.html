@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>GSAP Rotation Tube</title>
+  <style>
+    @font-face {
+      font-family: 'Bandeins-Strange';
+      src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/61488/BandeinsStrangeVariableGX.ttf') format('truetype');
+      font-stretch: 100% 800%;
+      font-weight: 200 800;
+      font-display: block;
+    }
+
+    :root {
+      --fontSize: 4;
+    }
+
+    html,
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+    }
+
+    .roatestage {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .roatetube {
+      perspective: 100vw;
+    }
+
+    .roatetube__inner {
+      transform-style: preserve-3d;
+    }
+
+    .rotateline {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      font-family: 'Bandeins-Strange';
+      font-size: calc(var(--fontSize) * 1vw);
+      font-stretch: 800%;
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1;
+      transform-style: preserve-3d;
+    }
+
+    .next {
+      background: #222;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="roatestage">
+    <div class="roatetube">
+      <div class="roatetube__inner">
+        <h1 class="rotateline">Rotation</h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="next">
+    <p>Next section 🚀</p>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    console.clear();
+    gsap.registerPlugin(ScrollTrigger);
+
+    const roatestage = document.querySelector('.roatestage');
+    const roatetubeInner = document.querySelector(".roatetube__inner");
+    const clone = document.getElementsByClassName("rotateline");
+    const numLines = 10;
+    const fontSize = gsap.getProperty(':root', '--fontSize');
+    const angle = 360 / numLines;
+    let radius = 0;
+    let origin = 0;
+
+    function set3D() {
+      let width = window.innerWidth;
+      let fontSizePx = (width / 100) * fontSize;
+      radius = (fontSizePx / 2) / Math.sin((180 / numLines) * (Math.PI / 180));
+      origin = `50% 50% -${radius}px`;
+    }
+
+    function clodeNode() {
+      for (var i = 0; i < (numLines - 1); i++) {
+        let newClone = clone[0].cloneNode(true);
+        roatetubeInner.appendChild(newClone);
+      }
+    }
+
+    function positionTxt() {
+      gsap.set('.rotateline', {
+        rotationX: (index) => -angle * index,
+        z: radius,
+        transformOrigin: origin
+      });
+    }
+
+    function setProps(targets) {
+      targets.forEach(function (target) {
+        let degrees = gsap.getProperty(target, "rotateX");
+        let radians = degrees * (Math.PI / 180);
+        let conversion = Math.abs(Math.cos(radians) / 2 + 0.5);
+        let fontW = 200 + 700 * conversion;
+        let fontS = `${100 + 700 * conversion}%`;
+
+        gsap.set(target, {
+          opacity: conversion + 0.1,
+          fontWeight: fontW,
+          fontStretch: fontS
+        });
+      })
+    }
+
+    function scrollRotate() {
+      let tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.roatestage',
+          scrub: 1,
+          pin: true,
+          pinSpacing: true,   // ✅ ensures next section is pushed down
+          anticipatePin: 1,   // ✅ smoother back scroll
+          start: "top top",
+          end: "+=2000"       // scroll distance
+        },
+        onUpdate: () => {
+          setProps(gsap.utils.toArray(".rotateline"));
+        }
+      });
+
+      // Rotate all lines
+      tl.to('.rotateline', { rotateX: "+=1440", ease: "none" });
+
+      // Also animate perspective of the tube
+      tl.to('.roatetube', { perspective: '1vw', ease: "expo.out" }, 0);
+    }
+
+    function init() {
+      clodeNode();
+      set3D();
+      window.onresize = () => {
+        set3D();
+        positionTxt();
+      }
+      positionTxt();
+      setProps(gsap.utils.toArray(".rotateline"));
+      scrollRotate();
+      gsap.to(roatestage, { autoAlpha: 1, duration: 2, delay: 1 });
+    }
+
+    window.onload = init;
+  </script>
+</body>
+
+</html>
