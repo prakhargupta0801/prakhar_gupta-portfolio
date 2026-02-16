@@ -879,8 +879,7 @@ body.no-scroll {
 }
 
 .slidergallery {
-    width: 100px;
-    background-color: #fff;
+    background-color: #1F1F1F;
     height: 95vh;
     position: relative;
     overflow: hidden;
@@ -896,7 +895,7 @@ body.no-scroll {
 }
 
 .slidergallery .panel {
-    flex: 0 0 50vw;
+    flex: 0 0 97vw;
     position: relative;
 }
 
@@ -913,11 +912,20 @@ body.no-scroll {
     position: absolute;
     top: 10px;
     left: 20px;
+    font-weight: 900;
     height: auto;
     display: flex;
     align-items: center;
     cursor: pointer;
-    font-size: 30px;
+    font-size: 5rem;
+    padding-right: 5rem;
+    /* mix-blend-mode: difference; */
+    color: rgb(255, 255, 255);
+    background: linear-gradient(to right, rgba(52, 52, 52, 0.851) 0%,
+
+            rgba(98, 98, 98, 0.4) 70%,
+            rgba(168, 168, 168, 0) 100%);
+    border-radius: 12px;
 }
 
 .overlap-text .img-visit {
@@ -929,9 +937,11 @@ body.no-scroll {
     display: flex;
     align-items: center;
     cursor: pointer;
-    border: 1px solid #000;
+    border: 1px solid #b8b8b8;
+    color: #000;
     padding: 5px 15px;
     border-radius: 10px;
+    background-color: #fff;
 }
 
 .overlap-text .img-visit p {
@@ -949,9 +959,10 @@ body.no-scroll {
 }
 
 .slidergallery .panel .img-slider {
-    /* width: 100%; */
+    width: 100%;
     height: 100%;
     object-fit: cover;
+    background-position: center;
     border-radius: 20px;
     overflow: hidden;
     /* slight zoom for animation */
@@ -1100,15 +1111,15 @@ body.no-scroll {
     font: 700 9vmax "GilroyExtrabold";
 }
 
-.mail{
+.mail {
     color: #FC626A;
 }
 
-.instagram{
+.instagram {
     color: #F6BA53;
 }
 
-.linkedin{
+.linkedin {
     color: #51CDE7;
 }
 
@@ -1140,6 +1151,49 @@ body.no-scroll {
     text-decoration: line-through;
 }
 
+
+
+#work {
+    width: 85%;
+    margin: 0 auto;
+    margin-top: 60px;
+    margin-bottom: 50px;
+    /* background-color: red; */
+}
+
+#work h4 {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.line {
+    margin-right: 2vmax;
+    width: 5vmax;
+    height: 0.12vmax;
+    background-color: rgb(81, 81, 81);
+    border: none;
+}
+
+.line-hide {
+    width: 5.2vmax;
+    background-color: transparent;
+}
+
+#work h1 {
+    font-size: 70px;
+    line-height: 60px;
+    margin-top: 20px;
+}
+
+#work h1 span {
+    color: #f75c64;
+}
+
+
 @media(max-width: 767px) {
 
     .prtf-header {
@@ -1164,6 +1218,20 @@ body.no-scroll {
 
     .inner-menu-popup .image-slider {
         margin-right: 10px;
+        width: 40%;
+    }
+
+    .inner-btn-slider{
+        width: 100%;
+    }
+
+    .email-slider{
+        width: 100%;
+    }
+
+    .email-slider a{
+        width: 100%;
+        word-wrap: break-word;
     }
 
     .inner-btn-slider {
@@ -1185,11 +1253,12 @@ body.no-scroll {
     .nav-item-icon.show {
         right: 15px;
     }
-        .page5 {
+
+    .page5 {
         height: 85vh;
     }
 
-     /* --------------page5----------- */
+    /* --------------page5----------- */
 
     .page5>h1,
     a {
@@ -1212,4 +1281,174 @@ body.no-scroll {
     .page5 .madeBy>img {
         width: 3vmax;
     }
+
+    .Creative-banner h2 {
+        font-size: 4.5rem;
+    }
+
+    #mainpart h1 {
+        font-size: 38px;
+        margin-top: 50px;
+        line-height: 50px;
+    }
+
+    #mainpart {
+        min-height: 520px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+    }
+
+    .about-text.hello-animation span {
+        font-size: 50px !important;
+        padding-left: 0px !important;
+    }
+
+    .about-text {
+        padding-left: 15px !important;
+        font-size: 44px !important;
+        width: 95%;
+    }
+
+    .experience-txt {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .about-text.top-300 {
+        margin-top: 100px !important;
+        flex-direction: column;
+        align-items: self-start;
+        padding: 15px;
+    }
+
+    .about-text h2 {
+        width: 95%;
+        font-size: 28px;
+    }
+
+    .about-text p {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .about-img {
+        flex-direction: column;
+        display: flex;
+        align-items: self-start;
+        justify-content: space-between;
+    }
+
+    .about-img .img {
+        height: 400px;
+        border-radius: 12px 10vh 12px 12px;
+        width: 100%;
+    }
+
+    .about-img .text {
+        width: 100%;
+    }
+
+    .about-img .img img {
+        opacity: 0.8;
+    }
+
+    #skills h3 {
+        font-size: 28px;
+    }
+
+    .well {
+        width: 100%;
+        padding-top: 10px;
+    }
+
+    .well img {
+        height: 30px;
+        margin-right: 30px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .experience-banner h2 {
+        font-size: 4rem;
+    }
+
+
+    .experience-head {
+        width: 90%;
+        flex-direction: column;
+        align-items: self-start;
+    }
+
+    .inner-head,
+    .experience-head p {
+        width: 100%;
+    }
+
+    .experience-main {
+        width: 90%;
+    }
+
+    .experience-main .company-inner span {
+        font-size: 2rem;
+    }
+
+    .experience-head h2 {
+        font-size: 2rem;
+    }
+
+    .experience-main .company-inner .company-text div {
+        padding-left: 0px;
+        width: 80%;
+    }
+
+    .experience-main .company-inner h2 {
+        font-size: 1.2rem;
+    }
+
+    .experience-main .company-inner p {
+        display: none;
+    }
+
+    .company-drop-in {
+        width: 100%;
+    }
+
+    .prtf-main {
+        max-width: 390%;
+        overflow-x: hidden;
+    }
+
+    .about-banner {
+        width: 98%;
+    }
+
+    .about-banner h2 {
+        font-size: 3rem;
+    }
+
+    .slidergallery .panel {
+        flex: 0 0 88vw;
+    }
+
+    .slidergallery-main {
+        width: 88%;
+    }
+
+    .inner-menu-popup .btn-slider {
+        width: 60%;
+    }
+
+    .work-banner {
+        margin-bottom: 13px;
+    }
+
+    .work-banner h2 {
+        font-size: 3rem !important;
+        padding: 0;
+    }
+
+
 }
