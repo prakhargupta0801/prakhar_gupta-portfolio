@@ -541,7 +541,13 @@ body.no-scroll {
     width: 55%;
     font-size: 40px;
     font-weight: 600;
+    font-family: "GilroyRegular";
+}
 
+.about-text h2 span {
+    font-size: 40px !important;
+    font-weight: 600;
+    font-family: "GilroyRegular" !important;
 }
 
 .about-text p {
@@ -549,6 +555,13 @@ body.no-scroll {
     color: #949494;
     font-size: 18px;
     font-weight: 600;
+}
+
+.about-text p span {
+    color: #949494;
+    font-size: 18px !important;
+    font-weight: 600;
+    font-family: "GilroyRegular" !important;
 }
 
 .about-img {
@@ -1221,15 +1234,15 @@ body.no-scroll {
         width: 40%;
     }
 
-    .inner-btn-slider{
+    .inner-btn-slider {
         width: 100%;
     }
 
-    .email-slider{
+    .email-slider {
         width: 100%;
     }
 
-    .email-slider a{
+    .email-slider a {
         width: 100%;
         word-wrap: break-word;
     }
@@ -1287,7 +1300,7 @@ body.no-scroll {
     }
 
     #mainpart h1 {
-        font-size: 38px;
+        font-size: 36px;
         margin-top: 50px;
         line-height: 50px;
     }
@@ -1327,6 +1340,10 @@ body.no-scroll {
     .about-text h2 {
         width: 95%;
         font-size: 28px;
+    }
+
+    .about-text h2 span {
+        font-size: 28px !important;
     }
 
     .about-text p {
@@ -1448,6 +1465,10 @@ body.no-scroll {
     .work-banner h2 {
         font-size: 3rem !important;
         padding: 0;
+    }
+
+    #work h4 {
+        margin-top: 35px;
     }
 
 

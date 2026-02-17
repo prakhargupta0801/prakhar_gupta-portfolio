@@ -117,8 +117,8 @@
                 </p>
             </div>
             <div class="about-text top-300" style="margin-top: 300px;">
-                <h2>Design has always been more than just a job - it's my passion.</h2>
-                <p>Design is not just a job for me, it's a passion that drives me.</p>
+                <h2 letters-fade-in words-slide-up text-split>Design has always been more than just a job - it's my passion.</h2>
+                <p letters-slide-up scrub-each-word text-split>Design is not just a job for me, it's a passion that drives me.</p>
             </div>
             <div class="about-img">
                 <div class="img">
@@ -185,7 +185,7 @@
 
         <div class="dark-color">
             <div id="experience" class="experience-banner">
-                <h2>Experience</h2>
+                <h2  experience-each-letter text-split>Experience</h2>
             </div>
             <div class="experience-head">
                 <div class="inner-head">
@@ -194,11 +194,11 @@
                         Experience
                     </h4>
 
-                    <h2>
+                    <h2 letters-fade-in words-slide-up text-split>
                         Explore My Design <br> Journey
                     </h2>
                 </div>
-                <p>Over the past 4+ years, I've had the opportunity to work on a wide range of design projects,
+                <p letters-slide-up scrub-each-word text-split>Over the past 4+ years, I've had the opportunity to work on a wide range of design projects,
                     collaborating with diverse teams and clients to bring creative visions to life.</p>
             </div>
             <div class="experience-main">
@@ -320,7 +320,7 @@
 
             <div id="work">
                 <div id="worksample" class="experience-banner work-banner" style="width: 100%; margin-bottom: -50px;">
-                    <h2 class="text-center">Work Samples</h2>
+                    <h2 class="text-center" experience-each-letter text-split>Work Samples</h2>
                 </div>
                 <h4>
                     <div class="line"></div> What I do
@@ -343,7 +343,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="panel">
                                 <img class="img-slider" src="./images/work-1.png" alt="">
                                 <div class="overlap-text">
@@ -384,7 +383,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </section>
                 </div>
@@ -766,6 +764,37 @@
                         trigger: element,
                         start: "top 80%",
                         end: "bottom 15%",
+                        scrub: true,
+                    },
+                });
+
+                // Split into characters
+                const typeSplit = new SplitType(element, {
+                    types: "chars",
+                    tagName: "span",
+                });
+
+                // Select all characters
+                const chars = element.querySelectorAll(".char");
+
+                // Animate each character
+                tl.from(chars, {
+                    opacity: 0,
+                    yPercent: 100,       // slide up from below
+                    duration: 1,
+                    ease: "power1.out",
+                    stagger: { each: 0.5 } // one by one
+                });
+            });
+
+            const experienceEachLetterElements = document.querySelectorAll("[experience-each-letter]");
+            experienceEachLetterElements.forEach((element) => {
+                // Timeline with ScrollTrigger
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 90%",
+                        end: "bottom 50%",
                         scrub: true,
                     },
                 });
