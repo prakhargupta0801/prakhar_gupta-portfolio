@@ -955,6 +955,7 @@ body.no-scroll {
     padding: 5px 15px;
     border-radius: 10px;
     background-color: #fff;
+
 }
 
 .overlap-text .img-visit p {
@@ -962,7 +963,7 @@ body.no-scroll {
     font-weight: 600;
     margin: 0;
     margin-right: 5px;
-    letter-spacing: 5px;
+    letter-spacing: 4px;
 }
 
 .overlap-text img {
