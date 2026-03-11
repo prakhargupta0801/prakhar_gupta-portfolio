@@ -14,6 +14,165 @@
 
 <body>
 
+
+    <!-- Small + Big cursors -->
+    <div class="cursor-small"></div>
+    <div class="cursor-big"></div>
+
+    <style>
+        body {
+            cursor: none;
+        }
+
+        .cursor-small,
+        .cursor-big {
+            position: fixed;
+            left: 0;
+            top: 0;
+            border-radius: 50%;
+            background: #fff;
+            mix-blend-mode: difference;
+            pointer-events: none;
+            /* IMPORTANT: keep this so element's center aligns on left/top */
+            transform: translate(-50%, 50%);
+            z-index: 9999;
+            will-change: left, top;
+        }
+
+        .cursor-big {
+            position: fixed;
+            left: 0;
+            top: 0;
+            transform: translate(-50%, -25%) !important;
+            z-index: 9999;
+            will-change: left, top;
+        }
+
+
+        .cursor-small {
+            width: 12px;
+            height: 12px;
+        }
+
+        .cursor-big {
+            width: 44px;
+            height: 44px;
+            opacity: 0.95;
+        }
+
+        /* Optional: click feedback */
+        .is-down .cursor-small {
+            transform: translate(-50%, -50%) scale(0.85);
+            transition: transform .08s ease;
+        }
+
+        .is-down .cursor-big {
+            transform: translate(-50%, -50%) scale(0.92);
+            transition: transform .08s ease;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+
+            .cursor-small,
+            .cursor-big {
+                display: none;
+            }
+
+            body {
+                cursor: auto;
+            }
+        }
+    </style>
+
+    <script>
+        (function () {
+            var small = document.querySelector('.cursor-small');
+            var big = document.querySelector('.cursor-big');
+
+            // Target (pointer), Big current
+            var tx = window.innerWidth / 2, ty = window.innerHeight / 2;
+            var bx = tx, by = ty;
+
+            // Tuning
+            var easing = 0.16;          // smoothness for big circle
+            var inactivityDelay = 500;  // ms after last move to stop
+            var stopEpsilon = 0.25;     // how close counts as "arrived"
+
+            var rafId = null;
+            var lastMoveTs = Date.now();
+
+            function setPos(el, x, y) {
+                // Use left/top so translate(-50%,-50%) keeps center aligned
+                el.style.left = x + 'px';
+                el.style.top = y + 'px';
+            }
+
+            function onMove(e) {
+                if (e.touches && e.touches.length) {
+                    tx = e.touches[0].clientX;
+                    ty = e.touches[0].clientY;
+                } else {
+                    tx = e.clientX;
+                    ty = e.clientY;
+                }
+                lastMoveTs = Date.now();
+
+                // Small follows instantly
+                setPos(small, tx, ty);
+
+                // Start loop if not running
+                if (!rafId) rafId = requestAnimationFrame(update);
+            }
+
+            function update() {
+                // Big follows smoothly
+                bx += (tx - bx) * easing;
+                by += (ty - by) * easing;
+
+                setPos(big, bx, by);
+
+                var dx = tx - bx, dy = ty - by;
+                var dist2 = dx * dx + dy * dy;
+                var now = Date.now();
+                var inactive = (now - lastMoveTs) > inactivityDelay;
+
+                if (inactive) {
+                    // Force snap to exact target
+                    bx = tx; by = ty;
+                    setPos(big, bx, by);
+                    setPos(small, bx, by);   // small EXACT center of big
+                    rafId = null;
+                    return;
+                }
+
+                if (dist2 > stopEpsilon * stopEpsilon) {
+                    rafId = requestAnimationFrame(update);
+                } else {
+                    // Arrived: snap and center small
+                    bx = tx; by = ty;
+                    setPos(big, bx, by);
+                    setPos(small, bx, by);
+                    rafId = null;
+                }
+            }
+
+            // Optional: click feedback
+            function down() { document.body.classList.add('is-down'); }
+            function up() { document.body.classList.remove('is-down'); }
+
+            window.addEventListener('mousemove', onMove, { passive: true });
+            window.addEventListener('touchmove', onMove, { passive: true });
+            window.addEventListener('mousedown', down, { passive: true });
+            window.addEventListener('mouseup', up, { passive: true });
+
+            // Initial at center
+            setPos(small, bx, by);
+            setPos(big, bx, by);
+        })();
+    </script>
+
+
     <div class="prtf-main">
         <nav class="prtf-header d-flex align-items-center justify-content-between">
             <h3><span class="bold">Prakhar Gupta</h3>
@@ -56,6 +215,7 @@
                         <a class="menu-link" href="#experience"> Experience <div class="line"></div></a>
                         <a class="menu-link" href="#worksample"> Work <div class="line"></div></a>
                         <a class="menu-link" href="#contact"> CONTACT <div class="line"></div></a>
+                        <a class="menu-link" href="Prakhar_Gupta.pdf" target="_blank">Download Resume <div class="line"></div></a>
                     </div>
 
                     <div class="email-slider">
@@ -79,6 +239,7 @@
             <!-- <img src="./images/badge.png" alt=""> -->
             <div class="Creative-banner">
                 <h2 class="animate-1">Creative Developer</h2>
+                <div id="cursor"></div>
             </div>
 
             <h1 letters-fade-in words-slide-up text-split>I love to create <br><span
@@ -96,7 +257,64 @@
         </div>
         <!-- Intro -->
 
-        <div id="aboutme" class="dark-color">
+        <style>
+            #mainpart {
+                position: relative;
+                /* IMPORTANT */
+                cursor: none;
+                /* native cursor hide only in this section */
+            }
+
+            #mainpart #cursor {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                /* border: 2px solid #000; */
+                border-radius: 50%;
+                box-sizing: border-box;
+                pointer-events: none;
+                transform: translate(-50%, -50%);
+                transition: width 0.15s ease, height 0.15s ease, border 0.15s ease, opacity 0.1s ease;
+                opacity: 0;
+                /* show only when inside */
+                z-index: 99999999999999999999999999999999999999999999999999999999999999999;
+            }
+
+            #mainpart h2:hover~#cursor {
+                width: 10rem;
+                height: 10rem;
+                border: 2px dashed #000;
+                animation: cursor 5s linear infinite;
+            }
+
+            @keyframes cursor {
+                0% {
+                    transform: translate(-50%, -50%) rotate(0deg);
+                }
+
+                100% {
+                    transform: translate(-50%, -50%) rotate(360deg);
+                }
+            }
+        </style>
+
+        <script>
+            const section = document.getElementById('mainpart');
+            const cursor = document.getElementById('cursor');
+
+            section.addEventListener('mousemove', (e) => {
+                const rect = section.getBoundingClientRect();
+                const x = e.clientX - rect.left; // section-relative X
+                const y = e.clientY - rect.top;  // section-relative Y
+                cursor.style.left = x + 'px';
+                cursor.style.top = y + 'px';
+            });
+            section.addEventListener('mouseenter', () => cursor.style.opacity = '1');
+            section.addEventListener('mouseleave', () => cursor.style.opacity = '0');
+        </script>
+
+
+        <div id="aboutme" class="dark-color circle-stroke">
             <div class="about-banner">
                 <h2 about-each-letter text-split>About Me</h2>
             </div>
@@ -107,7 +325,7 @@
                 style="font-family: Shaloems; font-size: 3.5rem; font-weight: 500; padding-left: 100px;">
                 I'm Prakhar Gupta
             </h2>
-            <div class="experience-txt" style="margin-top: 100px;">
+            <div class="experience-txt" style="margin-top: 50px;">
                 <p>
                     <span>A Frontend & UI/UX Developer with 4+ years of</span>
                     <span>proven expertise in designing responsive, scalable web applications</span>
@@ -116,14 +334,120 @@
                     <span>creativity and innovation.</span>
                 </p>
             </div>
-            <div class="about-text top-300" style="margin-top: 300px;">
-                <h2 letters-fade-in words-slide-up text-split>Design has always been more than just a job - it's my passion.</h2>
-                <p letters-slide-up scrub-each-word text-split>Design is not just a job for me, it's a passion that drives me.</p>
+            <div class="about-text top-300" style="margin-top: 50px;">
+                <h2 letters-fade-in words-slide-up text-split>Design has always been more than just a job - it's my
+                    passion.</h2>
+                <p letters-slide-up scrub-each-word text-split>Design is not just a job for me, it's a passion that
+                    drives me.</p>
             </div>
             <div class="about-img">
                 <div class="img">
                     <img src="https://framerusercontent.com/images/2XuHZ70whiK9z9eNQRs2PI29urc.png?scale-down-to=512&width=2400&height=1808"
                         alt="">
+
+
+                    <!-- <div class="w">
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="i"></div>
+                        <div class="h">
+                            <h1>Creative image hover</h1>
+                        </div>
+                    </div> -->
+
+                    <!-- <style>
+                        .w {
+
+                            width: 100%;
+                            height: 400px;
+                            /* position: absolute; */
+                            overflow: hidden;
+                            background-image: rgba(66, 66, 66, 0.5) url("https://i.pinimg.com/1200x/7b/87/9b/7b879b8d16c5ec4662a0c2dfb3240b8a.jpg") repeat fixed;
+                            background-position: center;
+                            background-size: cover;
+                            position: relative;
+                            z-index: 5;
+                            font-size: 0;
+                        }
+
+                        .i {
+                            width: 40px;
+                            height: 100%;
+                            display: inline-block;
+                            position: relative;
+                            z-index: 4;
+                            padding: 2px;
+                            transition: all 1.3s ease-in-out;
+                            background: rgba(66, 66, 66, 0.5) url("https://framerusercontent.com/images/2XuHZ70whiK9z9eNQRs2PI29urc.png?scale-down-to=512&width=2400&height=1808") repeat fixed;
+                            background-size: cover;
+                            background-position: 50% 100%;
+                            border-radius: 0%;
+                        }
+
+                        .i:hover {
+                            transition: all 0s linear;
+                            opacity: 0;
+                        }
+
+                        .h {
+                            display: block;
+                            position: absolute;
+                            z-index: 2;
+                            width: 100%;
+                            text-align: center;
+                            top: 35px;
+                            font-size: 40px;
+                            color: rgba(245, 245, 220, 1);
+                            text-shadow: 0 5px 17px rgba(87, 87, 80, 0.85);
+                        }
+                    </style> -->
                 </div>
                 <div class="text">
                     <h2 words-slide-up text-split>+4</h2>
@@ -134,12 +458,139 @@
                     </p>
                 </div>
             </div>
-
         </div>
 
-        <div id="skillss" class="dark-color">
+        <style>
+            .circle-stroke {
+                position: relative;
+                overflow: hidden;
+                /* keep ripples inside */
+                min-height: 300px;
+                /* ensure visible area (adjust as needed) */
+            }
+
+            .circle-stroke svg {
+                position: absolute;
+                inset: 0;
+                z-index: 0;
+                /* behind content */
+            }
+
+            .circle-stroke .title {
+                position: relative;
+                z-index: 1;
+                /* above SVG */
+            }
+
+            .circle-stroke rect {
+                fill: none;
+                pointer-events: all;
+            }
+
+            .circle-stroke circle {
+                fill: none;
+                stroke-width: 1px;
+            }
+        </style>
+
+        <!-- D3 v7 -->
+        <script src="https://d3js.org/d3.v3.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                (function initAllCircleStroke(selector) {
+                    var MIN_INTERVAL_MS = 30;    // throttle: min time between circles
+                    var MIN_DISTANCE_PX = 1;     // spacing: min pointer travel between circles
+                    var MAX_CIRCLES = 500;   // cap: keep at most this many circles on screen
+                    var R_START = 5, R_END = 100;
+                    var STROKE = "#b5b5b557";
+                    var STROKE_WIDTH = 5;
+                    var DURATION = 2000;
+
+                    d3.selectAll(selector).each(function (_, idx) {
+                        var container = d3.select(this);
+                        var node = this;
+                        if (!container.select('svg').empty()) return;
+
+                        function size() {
+                            return {
+                                w: node.clientWidth || node.offsetWidth || 0,
+                                h: node.clientHeight || node.offsetHeight || 0
+                            };
+                        }
+
+                        var s = size();
+                        if (s.w === 0 || s.h === 0) {
+                            container.style('min-height', '280px');
+                            s = size();
+                        }
+
+                        var svg = container.append("svg")
+                            .attr("width", s.w)
+                            .attr("height", s.h);
+
+                        svg.append("rect")
+                            .attr("width", "100%")
+                            .attr("height", "100%")
+                            .style("pointer-events", "all")
+                            .style("fill", "none")
+                            .on(("ontouchstart" in document) ? "touchmove" : "mousemove", particle);
+
+                        var lastTime = 0;
+                        var lastX = null, lastY = null;
+
+                        var resizeNs = "resize.circle-stroke-" + idx;
+                        d3.select(window).on(resizeNs, function () {
+                            var s2 = size();
+                            svg.attr("width", s2.w).attr("height", s2.h);
+                        });
+
+                        function particle() {
+                            var now = Date.now();
+                            var m = d3.mouse(this);
+
+                            if (now - lastTime < MIN_INTERVAL_MS) { prevent(); return; }
+
+                            if (lastX !== null && lastY !== null) {
+                                var dx = m[0] - lastX, dy = m[1] - lastY;
+                                if (dx * dx + dy * dy < MIN_DISTANCE_PX * MIN_DISTANCE_PX) { prevent(); return; }
+                            }
+
+                            lastTime = now; lastX = m[0]; lastY = m[1];
+
+                            var circles = svg.selectAll("circle");
+                            var excess = circles.size() - (MAX_CIRCLES - 1);
+                            if (excess > 0) {
+                                circles.filter(function (d, i) { return i < excess; }).remove();
+                            }
+
+                            svg.insert("circle", "rect")
+                                .attr("cx", m[0])
+                                .attr("cy", m[1])
+                                .attr("r", R_START)
+                                .style("stroke", STROKE)
+                                .style("stroke-width", STROKE_WIDTH)
+                                .style("stroke-opacity", 1)
+                                .transition()
+                                .duration(DURATION)
+                                .ease("sqrt")
+                                .attr("r", R_END)
+                                .style("stroke-opacity", 1e-6)
+                                .remove();
+
+                            prevent();
+                        }
+
+                        function prevent() {
+                            if (d3.event && d3.event.preventDefault) d3.event.preventDefault();
+                        }
+                    });
+                })(".circle-stroke");
+            });
+        </script>
+
+        <div id="skillss" class="dark-color circle-stroke">
             <div id="skills">
-                <h3 class="slide-text" letters-slide-up text-split>
+                <h3 class="slide-text title" letters-slide-up text-split>
                     <div class="line"></div> What I Am &nbsp;<p>Good</p>&nbsp;At
                 </h3>
                 <!-- <h3>
@@ -183,11 +634,12 @@
             </section>
         </div> -->
 
+
         <div class="dark-color">
-            <div id="experience" class="experience-banner">
-                <h2  experience-each-letter text-split>Experience</h2>
+            <div id="experience" class="experience-banner circle-stroke">
+                <h2 experience-each-letter text-split>Experience</h2>
             </div>
-            <div class="experience-head">
+            <div class="experience-head circle-stroke circle-stroke">
                 <div class="inner-head">
                     <h4>
                         <span class="circle"></span>
@@ -198,10 +650,11 @@
                         Explore My Design <br> Journey
                     </h2>
                 </div>
-                <p letters-slide-up scrub-each-word text-split>Over the past 4+ years, I've had the opportunity to work on a wide range of design projects,
+                <p letters-slide-up scrub-each-word text-split>Over the past 4+ years, I've had the opportunity to work
+                    on a wide range of design projects,
                     collaborating with diverse teams and clients to bring creative visions to life.</p>
             </div>
-            <div class="experience-main">
+            <div class="experience-main circle-stroke">
                 <div style="border-bottom: 1px solid #616161;">
                     <div class="company-inner">
                         <span>01</span>
@@ -318,7 +771,7 @@
 
             </div>
 
-            <div id="work">
+            <div id="work" class="circle-stroke">
                 <div id="worksample" class="experience-banner work-banner" style="width: 100%; margin-bottom: -50px;">
                     <h2 class="text-center" experience-each-letter text-split>Work Samples</h2>
                 </div>
@@ -337,7 +790,7 @@
                                 <img class="img-slider" src="./images/work-2.png" alt="">
                                 <div class="overlap-text">
                                     <h1>01</h1>
-                                    <a  href="https://www.bongioielli.com/" target="_blank" class="img-visit">
+                                    <a href="https://www.bongioielli.com/" target="_blank" class="img-visit">
                                         <p>Visit</p>
                                         <img src="./images/arrow.png" alt="">
                                     </a>
@@ -378,7 +831,7 @@
                                 <div class="overlap-text">
                                     <h1>05</h1>
                                     <a href="https://diamond-search-gemstone-byor-ring-builder-keyideas.myshopify.com/"
-                                target="_blank" class="img-visit">
+                                        target="_blank" class="img-visit">
                                         <p>Visit</p>
                                         <img src="./images/arrow.png" alt="">
                                     </a>
@@ -400,7 +853,7 @@
                         <a target="_blank" href="https://www.linkedin.com/in/prakhargupta0801/">linkedIn</a></span>.
                 </h1>
                 <footer class="madeBy">
-                    made with&nbsp;<img src="images/heart.png" alt="">&nbsp;by &nbsp; &nbsp;&nbsp;&nbsp; <span
+                    Made with&nbsp; passion  <!-- <img src="images/heart.png" alt="">-->by &nbsp; &nbsp;&nbsp;&nbsp; <span 
                         class="author">
                         <a class="madeby-2" style="text-decoration: initial;" href="#">Prakhar_gupta</a>
                     </span>

@@ -452,6 +452,10 @@ body.no-scroll {
     /* background-color: #eee; */
 }
 
+.prtf-main button, .prtf-main a{
+    z-index: 2;
+}
+
 #mainpart img:nth-child(1) {
     width: 250px;
 }
@@ -748,6 +752,10 @@ body.no-scroll {
     border-radius: 5px;
     margin-right: 50px;
     margin-bottom: 30px;
+}
+
+.well img:hover {
+  transform: scale(1.2) !important;
 }
 
 .experience-head {

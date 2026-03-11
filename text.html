@@ -1,178 +1,143 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <title>GSAP Rotation Tube</title>
-  <style>
-    @font-face {
-      font-family: 'Bandeins-Strange';
-      src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/61488/BandeinsStrangeVariableGX.ttf') format('truetype');
-      font-stretch: 100% 800%;
-      font-weight: 200 800;
-      font-display: block;
-    }
-
-    :root {
-      --fontSize: 4;
-    }
-
-    html,
-    body {
-      margin: 0;
-      background: black;
-      color: white;
-    }
-
-    .roatestage {
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      visibility: hidden;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .roatetube {
-      perspective: 100vw;
-    }
-
-    .roatetube__inner {
-      transform-style: preserve-3d;
-    }
-
-    .rotateline {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      margin: 0;
-      font-family: 'Bandeins-Strange';
-      font-size: calc(var(--fontSize) * 1vw);
-      font-stretch: 800%;
-      font-weight: 800;
-      text-transform: uppercase;
-      line-height: 1;
-      transform-style: preserve-3d;
-    }
-
-    .next {
-      background: #222;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Circle Stroke – Multiple Sections</title>
+<style>
+  .circle-stroke {
+    position: relative;
+    overflow: hidden;           /* keep ripples inside */
+    min-height: 280px;          /* ensure visible area */
+    background: linear-gradient(135deg, #f7f7f7, #eaeaea);
+    margin: 16px 0;
+    border-radius: 12px;
+  }
+  .circle-stroke svg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;                 /* behind content */
+    display: block;
+  }
+  .circle-stroke .title,
+  .circle-stroke .content {
+    position: relative;
+    z-index: 1;                 /* above svg */
+  }
+  .circle-stroke rect { fill: none; pointer-events: all; }
+  .circle-stroke circle { fill: none; stroke-width: 1px; }
+</style>
 </head>
-
 <body>
-  <section class="roatestage">
-    <div class="roatetube">
-      <div class="roatetube__inner">
-        <h1 class="rotateline">Rotation</h1>
-      </div>
-    </div>
-  </section>
 
-  <section class="next">
-    <p>Next section 🚀</p>
-  </section>
+<section class="circle-stroke">
+  <h2 class="title">About Me</h2>
+  <p class="content">Move your mouse inside this box to see ripples.</p>
+</section>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script>
-    console.clear();
-    gsap.registerPlugin(ScrollTrigger);
+<section class="circle-stroke">
+  <h2 class="title">Skills</h2>
+  <p class="content">This is a second independent ripple area.</p>
+</section>
 
-    const roatestage = document.querySelector('.roatestage');
-    const roatetubeInner = document.querySelector(".roatetube__inner");
-    const clone = document.getElementsByClassName("rotateline");
-    const numLines = 10;
-    const fontSize = gsap.getProperty(':root', '--fontSize');
-    const angle = 360 / numLines;
-    let radius = 0;
-    let origin = 0;
+<section class="circle-stroke">
+  <h2 class="title">Contact</h2>
+  <p class="content">And a third one for testing.</p>
+</section>
 
-    function set3D() {
-      let width = window.innerWidth;
-      let fontSizePx = (width / 100) * fontSize;
-      radius = (fontSizePx / 2) / Math.sin((180 / numLines) * (Math.PI / 180));
-      origin = `50% 50% -${radius}px`;
-    }
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  (function initAllCircleStroke(selector) {
+    var MIN_INTERVAL_MS = 40;    // throttle: min time between circles
+    var MIN_DISTANCE_PX = 2;     // spacing: min pointer travel
+    var MAX_CIRCLES     = 200;   // cap per section
+    var R_START = 5, R_END = 80;
+    var STROKE = "#b5b5b557";    // semi-transparent gray
+    var STROKE_WIDTH = 10;
+    var DURATION = 1600;
 
-    function clodeNode() {
-      for (var i = 0; i < (numLines - 1); i++) {
-        let newClone = clone[0].cloneNode(true);
-        roatetubeInner.appendChild(newClone);
+    d3.selectAll(selector).each(function(_, idx) {
+      var container = d3.select(this);
+      var node = this;
+      if (!container.select('svg').empty()) return;
+
+      function size() {
+        return {
+          w: node.clientWidth  || node.offsetWidth  || 0,
+          h: node.clientHeight || node.offsetHeight || 0
+        };
       }
-    }
 
-    function positionTxt() {
-      gsap.set('.rotateline', {
-        rotationX: (index) => -angle * index,
-        z: radius,
-        transformOrigin: origin
+      var s = size();
+      if (s.w === 0 || s.h === 0) {
+        container.style('min-height', '280px');
+        s = size();
+      }
+
+      var svg = container.append("svg")
+        .attr("width", s.w)
+        .attr("height", s.h);
+
+      svg.append("rect")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .style("pointer-events", "all")
+        .style("fill", "none")
+        .on(("ontouchstart" in document) ? "touchmove" : "mousemove", particle);
+
+      var lastTime = 0;
+      var lastX = null, lastY = null;
+
+      var resizeNs = "resize.circle-stroke-" + idx;
+      d3.select(window).on(resizeNs, function () {
+        var s2 = size();
+        svg.attr("width", s2.w).attr("height", s2.h);
       });
-    }
 
-    function setProps(targets) {
-      targets.forEach(function (target) {
-        let degrees = gsap.getProperty(target, "rotateX");
-        let radians = degrees * (Math.PI / 180);
-        let conversion = Math.abs(Math.cos(radians) / 2 + 0.5);
-        let fontW = 200 + 700 * conversion;
-        let fontS = `${100 + 700 * conversion}%`;
+      function particle() {
+        var now = Date.now();
+        var m = d3.mouse(this);
 
-        gsap.set(target, {
-          opacity: conversion + 0.1,
-          fontWeight: fontW,
-          fontStretch: fontS
-        });
-      })
-    }
+        if (now - lastTime < MIN_INTERVAL_MS) { prevent(); return; }
 
-    function scrollRotate() {
-      let tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.roatestage',
-          scrub: 1,
-          pin: true,
-          pinSpacing: true,   // ✅ ensures next section is pushed down
-          anticipatePin: 1,   // ✅ smoother back scroll
-          start: "top top",
-          end: "+=2000"       // scroll distance
-        },
-        onUpdate: () => {
-          setProps(gsap.utils.toArray(".rotateline"));
+        if (lastX !== null && lastY !== null) {
+          var dx = m[0] - lastX, dy = m[1] - lastY;
+          if (dx*dx + dy*dy < MIN_DISTANCE_PX*MIN_DISTANCE_PX) { prevent(); return; }
         }
-      });
 
-      // Rotate all lines
-      tl.to('.rotateline', { rotateX: "+=1440", ease: "none" });
+        lastTime = now; lastX = m[0]; lastY = m[1];
 
-      // Also animate perspective of the tube
-      tl.to('.roatetube', { perspective: '1vw', ease: "expo.out" }, 0);
-    }
+        var circles = svg.selectAll("circle");
+        var excess = circles.size() - (MAX_CIRCLES - 1);
+        if (excess > 0) {
+          circles.filter(function(d, i){ return i < excess; }).remove();
+        }
 
-    function init() {
-      clodeNode();
-      set3D();
-      window.onresize = () => {
-        set3D();
-        positionTxt();
+        svg.insert("circle", "rect")
+          .attr("cx", m[0])
+          .attr("cy", m[1])
+          .attr("r", R_START)
+          .style("stroke", STROKE)
+          .style("stroke-width", STROKE_WIDTH)
+          .style("stroke-opacity", 1)
+          .transition()
+          .duration(DURATION)
+          .ease("sqrt")
+          .attr("r", R_END)
+          .style("stroke-opacity", 1e-6)
+          .remove();
+
+        prevent();
       }
-      positionTxt();
-      setProps(gsap.utils.toArray(".rotateline"));
-      scrollRotate();
-      gsap.to(roatestage, { autoAlpha: 1, duration: 2, delay: 1 });
-    }
 
-    window.onload = init;
-  </script>
+      function prevent() {
+        if (d3.event && d3.event.preventDefault) d3.event.preventDefault();
+      }
+    });
+  })(".circle-stroke");
+});
+</script>
+
 </body>
-
 </html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cube – Slightly Fast Start, Then Slow + Pause</title>
+</head>
+<body>
+  
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+    }
+
+    .container {
+      perspective: 1000px;
+      perspective-origin: 100% 100%;
+    }
+
+    .cube {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      transform-style: preserve-3d;
+
+      /* Total: 2s (fast 1 spin) + 6s (slow 2 spins) + 1s (pause) = 9s */
+      animation: spinSlowSlope 9s linear infinite;
+      will-change: transform;
+    }
+
+    .cube > div {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(to right, #09adc8, #001f4e);
+      overflow: hidden;
+    }
+    .cube > div img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .s1 { transform: translateZ(50px); }
+    .s2 { transform: rotateY(90deg) translateZ(50px); }
+    .s3 { transform: rotateY(180deg) translateZ(50px); }
+    .s4 { transform: rotateX(90deg) translateZ(50px); }
+    .s5 { transform: rotateY(-90deg) translateZ(50px); }
+    .s6 { transform: rotateX(-90deg) translateZ(50px) rotate(180deg); }
+
+    /**
+     * spinSlowSlope
+     * - 0% → 22.222% (~2s of 9s): 1 spin (360°), slightly fast, ease-out feel
+     * - 22.222% → 88.889% (~6s): +2 spins (to 1080°), slower, ease-in-out feel
+     * - 88.889% → 100% (~1s): hold pose (pause)
+     *
+     * 2/9 = 22.222%, 8/9 = 88.889%
+     */
+    @keyframes spinSlowSlope {
+      0% {
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+        /* First segment easing (slightly fast start → ease out) */
+        /* animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1); */
+      }
+
+      /* After ~2s: 1 rotation complete */
+      22.222% {
+        transform: rotateX(0deg) rotateY(360deg) rotateZ(360deg);
+        /* Second segment easing (gentle, steady) */
+        /* animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); */
+      }
+
+      /* After ~8s total: total 3 rotations (1 fast + 2 slow) */
+      88.889% {
+        transform: rotateX(0deg) rotateY(1080deg) rotateZ(1080deg);
+        /* animation-timing-function: linear; last segment is a hold */
+      }
+
+      /* Pause ~1s by holding the transform */
+      100% {
+        transform: rotateX(0deg) rotateY(720deg) rotateZ(720deg);
+      }
+    }
+
+    /* Optional: Reduce motion accessibility */
+
+  </style>
+  <div class="container">
+    <div class="cube">
+      <div class="s1"><img src="https://www.group-ucs.com/assets/images/logo/UCS-LOGO.jpg" alt=""></div>
+      <div class="s2"><img src="https://www.group-ucs.com/assets/images/logo/UCS-LOGO.jpg" alt=""></div>
+      <div class="s3"><img src="https://www.group-ucs.com/assets/images/logo/UCS-LOGO.jpg" alt=""></div>
+      <div class="s4"><img src="https://www.group-ucs.com/assets/images/logo/UCS-LOGO.jpg" alt=""></div>
+      <div class="s5"><img src="https://www.group-ucs.com/assets/images/logo/UCS-LOGO.jpg" alt=""></div>
+      <div class="s6"><img src="https://www.group-ucs.com/assets/images/logo/UCS-LOGO.jpg" alt=""></div>
+    </div>
+  </div>
+</body>
+</html>
