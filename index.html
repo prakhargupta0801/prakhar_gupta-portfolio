@@ -200,7 +200,9 @@
         </div>
 
         <div class="menu-popup">
-            <div class="inner-menu-popup">
+            <div class="inner-menu-popup" style="position: relative;">
+                <pointer-particles></pointer-particles>
+
                 <div class="image-slider">
                     <div class="inn-image-slider">
                         <img src="https://framerusercontent.com/images/kZz1tyTd9CRrGzXFuCj52csQ.png?scale-down-to=512&width=2400&height=1808"
@@ -599,6 +601,7 @@
                     position: absolute;
                     z-index: 9999;
                 }
+                
             </style>
             <pointer-particles></pointer-particles>
 
@@ -609,7 +612,7 @@
 
                         this.ctx = ctx;
                         this.x = pointer.x;
-                        this.y = pointer.y;
+                        this.y = pointer.y + 12;
                         this.mx = pointer.mx * 0.1;
                         this.my = pointer.my * 0.1;
                         this.size = Math.random() + 1;
@@ -980,8 +983,8 @@
             <div class="dark-color ">
 
                 <div class="slidergallery-main" style="overflow-x: hidden;">
-                    <section class="slidergallery"  style="position: relative;">
-                            <pointer-particles></pointer-particles>
+                    <section class="slidergallery" style="position: relative;">
+                        <pointer-particles></pointer-particles>
                         <div class="images">
                             <div class="panel">
                                 <img class="img-slider" src="./images/work-2.png" alt="">
@@ -1039,8 +1042,8 @@
                 </div>
             </div>
 
-            <div id="contact" class="page5"  style="position: relative;">
-                            <pointer-particles></pointer-particles>
+            <div id="contact" class="page5" style="position: relative;">
+                <pointer-particles></pointer-particles>
                 <h1>you can get in touch <br>
                     with me via <span class="mail">
                         <a target="_blank" href="mailto: prakhargupta0801@gmail.com">mail</a>
