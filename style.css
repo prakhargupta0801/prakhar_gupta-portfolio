@@ -752,6 +752,7 @@ body.no-scroll {
     border-radius: 5px;
     margin-right: 50px;
     margin-bottom: 30px;
+    z-index: 99999999;
 }
 
 .well img:hover {

@@ -43,7 +43,7 @@
             position: fixed;
             left: 0;
             top: 0;
-            transform: translate(-50%, -25%) !important;
+            transform: translate(-50%, -10%) !important;
             z-index: 9999;
             will-change: left, top;
         }
@@ -277,7 +277,7 @@
                 transition: width 0.15s ease, height 0.15s ease, border 0.15s ease, opacity 0.1s ease;
                 opacity: 0;
                 /* show only when inside */
-                z-index: 99999999999999999999999999999999999999999999999999999999999999999;
+                z-index: 99999;
             }
 
             #mainpart h2:hover~#cursor {
@@ -499,7 +499,7 @@
             document.addEventListener('DOMContentLoaded', function () {
                 (function initAllCircleStroke(selector) {
                     var MIN_INTERVAL_MS = 30;    // throttle: min time between circles
-                    var MIN_DISTANCE_PX = 1;     // spacing: min pointer travel between circles
+                    var MIN_DISTANCE_PX = 150;     // spacing: min pointer travel between circles
                     var MAX_CIRCLES = 500;   // cap: keep at most this many circles on screen
                     var R_START = 5, R_END = 100;
                     var STROKE = "#b5b5b557";
